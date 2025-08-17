@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MBTI Handbook — 温もりトーン＋拡張モーション（安定版）</title>
+  <meta name="description" content="MBTIタイプ別の概要・機能スタック・機能説明・相性・職務適性・学習Tips。大きめボタンをクリックすると紹介ページが展開するシングルファイル（安定版）。" />
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho&family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#FAF8F3; --panel:#FFFFFF; --panel2:#F5F2EB; --text:#1B1E22; --muted:#6E7580;
+      --primary:#2F6F53; --primary-weak:#A8C4B1; --border:#E5E2DA; --accent:#C6813D;
+      --radius:20px; --radius-sm:14px; --shadow:0 12px 30px rgba(27,30,34,0.10);
+      --mono: ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;
+      --h-font:"Shippori Mincho","Noto Serif JP",serif; --b-font:"Noto Sans JP",system-ui,-apple-system,Segoe UI,Roboto,Meiryo,sans-serif;
+      --bg-parallax-y: 0px;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{ --bg:#0F1314; --panel:#121614; --panel2:#141917; --text:#E7ECEA; --muted:#9BB0A6;
+        --primary:#79B69A; --primary-weak:#2A3E35; --border:#23332C; --accent:#D39A64; --shadow:0 12px 30px rgba(0,0,0,0.35); }
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.8 var(--b-font);}
+    a{color:var(--primary);text-decoration:none} a:hover{text-decoration:underline}
+    .container{max-width:1180px;margin:0 auto;padding:20px 24px 64px}
+
+    /* Layered botanical background with soft parallax */
+    body::before, body::after{
+      content:"";position:fixed;inset:-10vh -10vw;z-index:-2;pointer-events:none;background-repeat:no-repeat;
+      transform: translateY(var(--bg-parallax-y));
+    }
+    body::before{background:
+      radial-gradient(1200px 600px at 10% -10%, rgba(58,122,93,0.10), transparent 60%),
+      radial-gradient(900px 480px at 110% 10%, rgba(200,129,61,0.10), transparent 60%);}
+    body::after{background:
+      radial-gradient(800px 800px at 90% 120%, rgba(168,196,177,0.20), transparent 60%),
+      radial-gradient(700px 500px at -10% 80%, rgba(58,122,93,0.12), transparent 70%); z-index:-3;}
+
+    header.top{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .brand-mark{width:48px;height:48px;border-radius:14px;background:var(--primary);display:grid;place-items:center;color:#fff;font-weight:800;box-shadow:var(--shadow)}
+    .brand .title{font-family:var(--h-font);letter-spacing:.02em;font-size:24px}
+
+    .hero{display:grid;gap:24px;grid-template-columns:1.1fr .9fr;align-items:center;margin:8px 0 32px}
+    @media (max-width:900px){.hero{grid-template-columns:1fr}}
+    .hero h1{font-family:var(--h-font);font-size:clamp(30px,4.2vw,44px);line-height:1.2;margin:0}
+    .hero p.sub{margin:10px 0 0;color:var(--muted)}
+    .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .hero-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}
+    .leaf{width:100%;height:240px;border-radius:var(--radius);border:1px solid var(--border);background:
+      radial-gradient(60% 80% at 30% 30%, rgba(168,196,177,.45), transparent 65%),
+      radial-gradient(50% 60% at 75% 50%, rgba(58,122,93,.30), transparent 60%),
+      linear-gradient(180deg, var(--panel2), var(--panel));}
+
+    .section{margin:40px 0}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+    .card .hd{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+    .card .bd{padding:20px}
+    .badge{display:inline-block;padding:5px 12px;border:1px solid var(--border);border-radius:999px;font-size:12px;background:var(--panel2)}
+    .chip{display:inline-block;padding:5px 10px;border:1px solid var(--border);border-radius:999px;font-size:12px;background:var(--primary-weak);color:#0a1a14}
+    .sec-h{display:flex;align-items:baseline;gap:12px;margin:10px 0 16px}
+    .sec-no{font-family:var(--mono);font-weight:700;color:var(--primary);background:var(--panel2);border:1px solid var(--border);border-radius:999px;padding:2px 10px}
+    .sec-title{font-family:var(--h-font);font-size:24px;letter-spacing:.02em}
+
+    .grid{display:grid;gap:16px}
+    .grid.cols-2{grid-template-columns: repeat(2,minmax(0,1fr))}
+    .grid.cols-3{grid-template-columns: repeat(3,minmax(0,1fr))}
+    .grid.cols-4{grid-template-columns: repeat(4,minmax(0,1fr))}
+    @media (max-width:1020px){.grid.cols-4{grid-template-columns: repeat(3,minmax(0,1fr))}}
+    @media (max-width:760px){.grid.cols-2,.grid.cols-3,.grid.cols-4{grid-template-columns:1fr}}
+
+    select, button{font:inherit}
+    select, .btn{padding:12px 14px;border:1px solid var(--border);border-radius:14px;background:var(--panel2)}
+    .btn{cursor:pointer;transition:transform .14s ease, box-shadow .14s ease}
+    .btn:hover{transform:translateY(-1.5px);box-shadow:0 8px 18px rgba(27,30,34,0.10)}
+    .btn.primary{background:var(--primary);border-color:transparent;color:#fff}
+    .muted{color:var(--muted)} .small{font-size:13px} .sep{height:1px;background:var(--border);margin:12px 0}
+    .pill{display:inline-block;padding:9px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--panel2)}
+
+    /* Tabs */
+    .tabs{display:flex;flex-wrap:wrap;gap:8px}
+    .tab-btn{padding:9px 14px;border:1px solid var(--border);border-radius:999px;background:var(--panel2);cursor:pointer}
+    .tab-btn.active{background:var(--primary-weak);border-color:var(--primary)}
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
+
+    /* Reveal: default visible; animate only when JS marks .motion-ready on <html> */
+    .reveal{opacity:1; transform:none;}
+    .motion-ready .reveal{opacity:0; transform:translateY(26px); transition:opacity .6s cubic-bezier(.22,.61,.36,1), transform .6s cubic-bezier(.22,.61,.36,1);}
+    .motion-ready .reveal.visible{opacity:1; transform:none}
+
+    /* Type cards */
+    .type-card{
+      position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;gap:10px;
+      padding:18px 16px;min-height:140px;border-radius:18px;border:1px solid var(--border);
+      background: linear-gradient(180deg, var(--panel), var(--panel2));
+      box-shadow: var(--shadow); transition: transform .18s cubic-bezier(.2,1,.2,1), box-shadow .18s ease, border-color .18s ease; cursor:pointer;}
+    .type-card:hover{ transform: translateY(-3px) scale(1.02); box-shadow:0 12px 28px rgba(27,30,34,0.12); border-color: var(--primary); }
+    .type-code{font-family:var(--mono);font-size:20px;font-weight:800;letter-spacing:.02em}
+    .type-sub{color:var(--muted);font-size:12px}
+    .type-badge{position:absolute;bottom:10px;right:12px}
+    .type-blob{position:absolute; inset:auto -10% -20% auto; width:120px; height:120px; border-radius:50%;
+      background: radial-gradient(60% 60% at 30% 30%, rgba(168,196,177,.5), transparent 70%), radial-gradient(50% 50% at 70% 60%, rgba(58,122,93,.35), transparent 70%);
+      filter: blur(6px); opacity:.9; pointer-events:none; transform: rotate(8deg);}
+
+    #detailPanel{overflow:hidden; height:0; transition: height .5s cubic-bezier(.2,1,.2,1);}
+    #detailInner{padding:0;}
+    .detail-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border)}
+    .avatar{display:flex;gap:12px;align-items:center}
+    .avatar svg{flex:0 0 auto}
+    .pop{animation:pop .28s cubic-bezier(.2,1.3,.2,1)}
+    @keyframes pop{0%{transform:scale(.94)} 70%{transform:scale(1.12)} 100%{transform:scale(1)}}
+    .detail-body{padding:20px}
+    .close-btn{border:none;background:transparent;font:inherit;cursor:pointer;color:var(--muted); padding:6px 8px;border-radius:10px;transition:background .15s ease, color .15s ease;}
+    .close-btn:hover{background:var(--panel2); color:var(--text)}
+
+    @media (prefers-reduced-motion: reduce){ .pop{animation:none} .motion-ready .reveal{transition:none} #detailPanel{transition:none} .type-card{transition:none} }
+    footer{margin-top:40px;font-size:12px;color:var(--muted)}
+    .code{font-family:var(--mono);font-size:12px;padding:2px 6px;border-radius:6px;background:var(--panel2);border:1px solid var(--border)}
+    /* Error bar */
+    #err{display:none;margin:12px 0;padding:10px 12px;border-radius:12px;border:1px solid #e6b8b8;background:#fff5f5;color:#6a2626;font-size:13px}
+    #err.show{display:block}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="top">
+      <div class="brand">
+        <div class="brand-mark">M</div>
+        <div>
+          <div class="title">MBTI Handbook</div>
+          <div class="muted small">タイプを押すと、紹介ページが下に展開されます（ワンファイル）</div>
+        </div>
+      </div>
+      <div class="muted small">GitHub Pages に <span class="code">index.html</span> を置くだけで公開できます</div>
+    </header>
+
+    <div id="err" role="status">読み込み時にスクリプトでエラーが発生しました。最新ブラウザで再読込いただくか、このページの下部からソース一式をお送りください。</div>
+
+    <section class="hero">
+      <div>
+        <h1 class="reveal">タイプで理解する、あなたの思考リズム。</h1>
+        <p class="sub reveal" style="transition-delay: .08s">温かみのある背景と大きめのモーションで、<b>「押したらどうなる？」</b>が自然と湧くUIに。</p>
+        <div class="hero-cta reveal" style="transition-delay: .16s">
+          <a href="#picker" class="btn primary">タイプを選ぶ</a>
+          <a href="#howto" class="btn">使い方を見る</a>
+        </div>
+      </div>
+      <div class="hero-card reveal" style="transition-delay: .12s">
+        <div class="leaf"></div>
+        <div class="small muted" style="margin-top:10px">背景パララックス / スクロール登場アニメ / クリック展開</div>
+      </div>
+    </section>
+
+    <section class="section" id="picker">
+      <div class="sec-h reveal"><span class="sec-no">01</span><h2 class="sec-title">タイプを選択</h2></div>
+      <div style="display:flex; gap:10px; align-items:center; margin-bottom:12px" class="reveal">
+        <label for="typeSelect" class="small muted">セレクトからも選べます：</label>
+        <select id="typeSelect"></select>
+      </div>
+      <div id="typeGrid" class="grid cols-4"></div>
+    </section>
+
+    <section class="card" id="detailPanel" aria-hidden="true">
+      <div id="detailInner"></div>
+    </section>
+
+    <section class="section" id="howto">
+      <div class="sec-h reveal"><span class="sec-no">02</span><h2 class="sec-title">このサイトの使い方</h2></div>
+      <div class="grid cols-3">
+        <div class="card reveal"><div class="bd small"><b>1. 大きなボタンを押す</b><br/>押したタイプの紹介ページが下に展開。もう一度押すと閉じます。</div></div>
+        <div class="card reveal"><div class="bd small"><b>2. タブで切り替え</b><br/>概要/機能スタック/機能説明/相性/職務適性/学習Tips/発達トラックをタブで切り替え。</div></div>
+        <div class="card reveal"><div class="bd small"><b>3. 編集しやすい</b><br/>このHTMLは1ファイル。データ配列を編集すれば、文言や適性、相性を簡単に更新できます。</div></div>
+      </div>
+    </section>
+
+    <footer>© <script>document.write(new Date().getFullYear())</script> MBTI Handbook – デザインテイストは独自調整。ロゴ/画像の流用は行っていません。</footer>
+  </div>
+
+  <script>
+    // Show any runtime error in a friendly bar
+    window.addEventListener('error', function(){ var e=document.getElementById('err'); if(e) e.classList.add('show'); });
+
+    // Parallax background
+    window.addEventListener("scroll", function(){ var y=Math.max(0, window.scrollY||window.pageYOffset||0); document.documentElement.style.setProperty("--bg-parallax-y", (y * -0.03) + "px"); }, {passive:true});
+
+    // Data
+    var ALL_TYPES = ["ISTJ","ISFJ","INFJ","INTJ","ISTP","ISFP","INFP","INTP","ESTP","ESFP","ENFP","ENTP","ESTJ","ESFJ","ENFJ","ENTJ"];
+    var JP = {ISTJ:"監査者 / 実務の職人", ISFJ:"ケアの番人", INFJ:"洞察ガイド", INTJ:"建築家 / 戦略家", ISTP:"実験家 / トラブルシューター", ISFP:"審美の実践者", INFP:"価値の編集者", INTP:"論理設計者", ESTP:"タクティシャン / ムーバー", ESFP:"エンターテイナー / カタリスト", ENFP:"ストーリーメイカー", ENTP:"発明家 / 探究家", ESTJ:"現場監督 / マネージャー", ESFJ:"ホスト / コーディネーター", ENFJ:"オーガナイザー / コミュニティビルダー", ENTJ:"統率者 / 司令塔"};
+    var FUNCTION_STACK = { ISTJ:["Si","Te","Fi","Ne"], ISFJ:["Si","Fe","Ti","Ne"], INFJ:["Ni","Fe","Ti","Se"], INTJ:["Ni","Te","Fi","Se"], ISTP:["Ti","Se","Ni","Fe"], ISFP:["Fi","Se","Ni","Te"], INFP:["Fi","Ne","Si","Te"], INTP:["Ti","Ne","Si","Fe"], ESTP:["Se","Ti","Fe","Ni"], ESFP:["Se","Fi","Te","Ni"], ENFP:["Ne","Fi","Te","Si"], ENTP:["Ne","Ti","Fe","Si"], ESTJ:["Te","Si","Ne","Fi"], ESFJ:["Fe","Si","Ne","Ti"], ENFJ:["Fe","Ni","Se","Ti"], ENTJ:["Te","Ni","Se","Fi"] };
+    var FUNCTION_SHORT = { Te:"外向的思考：目的から逆算し、効率・指標で意思決定", Ti:"内向的思考：定義と一貫性を重視、原理から組み立て", Fe:"外向的感情：場の雰囲気・合意・共感を調整", Fi:"内向的感情：価値観・良心・関係の誠実さを重視", Se:"外向的感覚：現場・スピード・具体的な手応え", Si:"内向的感覚：慣れ・ルーティン・身体感覚の安定", Ne:"外向的直観：拡散・可能性・組み合わせ発想", Ni:"内向的直観：収束・洞察・時間軸の一貫した像" };
+    var FUNCTION_LONG = { Te:"目的から逆算して構造化し、KPI/要件/優先順位で判断します。現実の制約を踏まえ、結果に責任を持つ姿勢が強み。", Ti:"定義・境界・整合性に敏感で、体系の矛盾を嫌います。概念の純度を高め、モデルの正しさを追求します。", Fe:"他者の感情や空気に同調し、場の“適温”を作ります。伝え方/言い方/場の段取りが意思決定に影響します。", Fi:"一対一の誠実さ・良心・価値の線引きを重視。距離感や約束への敏感さは信頼関係の礎になります。", Se:"今この場の手触り・動きの変化に鋭敏。機を逃さない実行力、現物対応の強さが光ります。", Si:"経験則・身体知・快/不快の閾値で調律。正しい手順・習慣を積み上げるほど安定します。", Ne:"可能性を次々に見出し、既存の組合せを超える連想を行います。枠を外す発想で停滞を突破します。", Ni:"点と点を一本の物語に統合。長期の帰結を静かに見通し、タイミングの妙を捉えます。" };
+    var OPP = {Te:"Fi", Ti:"Fe", Fe:"Ti", Fi:"Te", Se:"Ni", Si:"Ne", Ne:"Si", Ni:"Se"};
+    var TEMPER = { ISTJ:"SJ", ISFJ:"SJ", ESTJ:"SJ", ESFJ:"SJ", ISTP:"SP", ISFP:"SP", ESTP:"SP", ESFP:"SP", INTJ:"NT", INTP:"NT", ENTJ:"NT", ENTP:"NT", INFJ:"NF", INFP:"NF", ENFJ:"NF", ENFP:"NF" };
+    var SIMILAR_BY_TEMPER = { SJ:["ISTJ","ISFJ","ESTJ","ESFJ"], SP:["ISTP","ISFP","ESTP","ESFP"], NT:["INTJ","INTP","ENTJ","ENTP"], NF:["INFJ","INFP","ENFJ","ENFP"] };
+    var CAREER_BY_TEMPER = { SJ:["品質保証/監査","業務設計/オペレーション","会計/総務/公務","建設施工/安全管理"], SP:["営業/リテール/接客","救急/保安/現場対応","スポーツ/エンタメ制作","プロダクト実装/デザイン実務"], NT:["研究開発/エンジニアリング","プロダクト戦略/起業","コンサル/データ分析","システム設計/最適化"], NF:["教育/人材育成","編集/ライティング/ブランド","カウンセリング/支援職","コミュニティ運営/広報"] };
+    var STUDY_BY_TEMPER = { SJ:["手順化・チェックリスト化","過去問→誤答ノート→標準化","時間配分ルールを固定"], SP:["短時間スプリント＋実演復習","具体例から抽象へ","“締切→ご褒美”で加速"], NT:["概念マップ→仮説検証","Why→How→Whatの順","難問→一般化→演習で定着"], NF:["物語化/比喩で記憶","他者に教える","価値づけで動機形成"] };
+    var GOLDEN = { ISTJ:["ESFP","ESTP"], ISFJ:["ESTP","ESFP"], INFJ:["ENTP","ENFP"], INTJ:["ENFP","ENTP"], ISTP:["ESFJ","ESTJ"], ISFP:["ESTJ","ESFJ"], INFP:["ENTJ","ENFJ"], INTP:["ENFJ","ENTJ"], ESTP:["ISFJ","ISTJ"], ESFP:["ISTJ","ISFJ"], ENFP:["INTJ","INFJ"], ENTP:["INFJ","INTJ"], ESTJ:["ISFP","ISTP"], ESFJ:["ISTP","ISFP"], ENFJ:["INTP","ISFP"], ENTJ:["INFP","INTP"] };
+
+    // Simple helpers
+    function $(sel){ return document.querySelector(sel); }
+    function el(tag, attrs, kids){
+      var n=document.createElement(tag); attrs=attrs||{}; kids=kids||[];
+      for (var k in attrs){ if(k==="class"){ n.className=attrs[k]; } else if(k==="html"){ n.innerHTML=attrs[k]; } else { n.setAttribute(k, attrs[k]); } }
+      kids.forEach(function(c){ n.appendChild((typeof c==="string")? document.createTextNode(c): c); });
+      return n;
+    }
+    function getShadow(t){ return FUNCTION_STACK[t].map(function(fn){ return OPP[fn]; }); }
+    function avatarSVG(type, size){
+      size = size || 60;
+      var map = { I:220, E:10, N:280, S:160, T:200, F:330, J:40, P:120 };
+      var h = (map[type[0]]+map[type[1]]+map[type[2]]+map[type[3]])%360;
+      var color = "hsl("+h+" 30% 35%)";
+      return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 64 64">'
+        +'<defs><linearGradient id="g-'+type+'" x1="0" y1="0" x2="1" y2="1">'
+        +'<stop offset="0%" stop-color="'+color+'" stop-opacity="0.9"/>'
+        +'<stop offset="100%" stop-color="'+color+'" stop-opacity="0.5"/></linearGradient></defs>'
+        +'<rect x="4" y="4" width="56" height="56" rx="16" fill="url(#g-'+type+')"/>'
+        +'<circle cx="32" cy="26" r="10" fill="#fff" opacity="0.9"/>'
+        +'<rect x="18" y="36" width="28" height="16" rx="8" fill="#fff" opacity="0.9"/>'
+        +'<circle cx="28" cy="26" r="2" fill="#111"/><circle cx="36" cy="26" r="2" fill="#111"/>'
+        +(type[3]==="J" ? '<path d="M26 31 Q32 34 38 31" stroke="#111" stroke-width="2" fill="none"/>' : '<path d="M26 32 Q32 29 38 32" stroke="#111" stroke-width="2" fill="none"/>')
+        +'</svg>';
+    }
+    function svgFunctionFlow(stack, shadow){
+      var W=760,H=200, X=function(i){return 40+i*180;};
+      var s='\
+      <svg viewBox="0 0 '+W+' '+H+'" class="w-full h-auto">';
+      for(var i=0;i<stack.length;i++){
+        var fn=stack[i];
+        s+='<g><rect x="'+X(i)+'" y="20" width="160" height="48" rx="12" fill="var(--panel2)" stroke="var(--border)"/>'
+          +'<text x="'+(X(i)+80)+'" y="50" text-anchor="middle" fill="var(--text)" style="font-weight:600">'+(i+1)+'. '+fn+'</text>'
+          +(i<stack.length-1? '<line x1="'+(X(i)+160)+'" y1="44" x2="'+X(i+1)+'" y2="44" stroke="var(--primary)" stroke-width="2" marker-end="url(#arrow)"/>' : '')
+          +'</g>';
+      }
+      for(var j=0;j<shadow.length;j++){
+        var fn2=shadow[j];
+        s+='<g><rect x="'+X(j)+'" y="120" width="160" height="48" rx="12" fill="var(--panel2)" stroke="var(--border)"/>'
+          +'<text x="'+(X(j)+80)+'" y="150" text-anchor="middle" fill="var(--muted)">'+(j+5)+'. '+fn2+'</text>'
+          +(j<shadow.length-1? '<line x1="'+(X(j)+160)+'" y1="144" x2="'+X(j+1)+'" y2="144" stroke="var(--muted)" stroke-dasharray="4 4" stroke-width="2" marker-end="url(#arrow)"/>' : '')
+          +'</g>';
+      }
+      s+='<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="var(--primary)"/></marker></defs></svg>';
+      return s;
+    }
+    function svgDevelopment(stack){
+      var stages=["思春期","若年期","中年期","成熟期"];
+      var W=760,H=220, X=function(i){return 60+i*220;}, LV=[100,76,64,56];
+      var s='<svg viewBox="0 0 '+W+' '+H+'" class="w-full h-auto"><line x1="40" y1="170" x2="'+(W-40)+'" y2="170" stroke="var(--border)"/><line x1="40" y1="40" x2="40" y2="170" stroke="var(--border)"/><text x="12" y="30" fill="var(--muted)" font-size="12">負荷/抵抗</text>';
+      for(var i=0;i<stack.length;i++){
+        s+='<g><circle cx="'+X(i)+'" cy="'+LV[i]+'" r="7" fill="var(--primary)"/><text x="'+X(i)+'" y="'+(LV[i]-12)+'" text-anchor="middle" fill="var(--text)" font-size="14" font-weight="600">'+stack[i]+'</text><text x="'+X(i)+'" y="190" text-anchor="middle" fill="var(--muted)" font-size="12">'+stages[i]+'</text>'+(i<3? '<line x1="'+X(i)+'" y1="'+LV[i]+'" x2="'+X(i+1)+'" y2="'+LV[i+1]+'" stroke="var(--primary)" stroke-width="2"/>' : '')+'</g>';
+      }
+      s+='</svg>'; return s;
+    }
+
+    // Build UI
+    var typeSelect = document.getElementById("typeSelect");
+    var typeGrid = document.getElementById("typeGrid");
+    var detailPanel = document.getElementById("detailPanel");
+    var detailInner = document.getElementById("detailInner");
+
+    // Fill select
+    ALL_TYPES.forEach(function(t){ typeSelect.appendChild(el("option",{value:t},[t])); });
+
+    // Big cards
+    function temperamentOf(t){ return TEMPER[t]; }
+    function badgeOf(tp){ return temperamentOf(tp); }
+    ALL_TYPES.forEach(function(t){
+      var card = el("div",{class:"type-card reveal","data-type":t},[
+        el("div",{},[ el("div",{class:"type-code"},[t]), el("div",{class:"type-sub"},[JP[t]]) ]),
+        el("span",{class:"badge type-badge"},[badgeOf(t)]),
+        el("div",{class:"type-blob"})
+      ]);
+      card.addEventListener("click", function(){ toggleDetail(t, card); });
+      card.setAttribute("tabindex","0");
+      card.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggleDetail(t, card);} });
+      typeGrid.appendChild(card);
+    });
+
+    // Reveal on scroll (after init, mark motion-ready)
+    try{
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            e.target.classList.add("visible");
+            io.unobserve(e.target);
+          }
+        });
+      }, {threshold:0.12});
+      document.querySelectorAll(".reveal").forEach(function(n){ io.observe(n); });
+      document.documentElement.classList.add('motion-ready');
+    }catch(err){
+      // Older browsers: no IntersectionObserver → just show
+      // (No class added, reveal stays visible)
+    }
+
+    // Select → open
+    typeSelect.addEventListener("change", function(e){ openFromSelect(e.target.value); });
+
+    // Toggle/open/close
+    var currentType = null;
+    var escHandler = null;
+
+    function toggleDetail(t, node){ if(currentType===t){ closeDetail(); } else { openDetail(t, node); } }
+
+    function openDetail(t, node){
+      currentType = t; typeSelect.value = t;
+      var primary = FUNCTION_STACK[t]; var shadow = getShadow(t); var temperament = TEMPER[t];
+      var header = '<div class="detail-header"><div class="avatar"><div class="pop">'+avatarSVG(t, 60)+'</div><div><div id="typeTitle" style="font-weight:800;font-size:22px">'+t+'</div><div class="muted small" id="typeSubtitle">'+JP[t]+'</div></div></div><div style="display:flex;gap:8px;align-items:center"><span class="chip">'+temperament+'</span><button class="close-btn" id="closeDetailBtn" aria-label="閉じる">閉じる ✕</button></div></div>';
+      var tabs=[["overview","概要"],["stack","機能スタック"],["functions","各機能の説明"],["compat","互換・相性"],["career","職務適性"],["study","学習Tips"],["dev","発達トラック"]];
+      var tabsHeader='<div class="tabs" id="tabs">'+tabs.map(function(p){return '<button class="tab-btn" data-tab="'+p[0]+'">'+p[1]+'</button>';}).join("")+'</div>';
+      var panels=tabs.map(function(p){return '<div class="tab-panel" id="panel-'+p[0]+'"><div id="p-'+p[0]+'"></div></div>';}).join("");
+
+      detailInner.innerHTML = header + '<div class="detail-body">'+tabsHeader+'<div id="panels">'+panels+'</div></div>';
+
+      $("#p-overview").innerHTML = '<div class="grid cols-2">'
+        +'<div class="card"><div class="hd"><div style="font-weight:700">'+t+' の要点</div></div><div class="bd small"><div style="display:grid;grid-template-columns:120px 1fr;gap:8px;align-items:start"><b>主要機能</b><div><b>'+primary.join(" → ")+'</b></div><b>シャドー</b><div>'+shadow.join(" → ")+'</div><b>同質タイプ</b><div>'+SIMILAR_BY_TEMPER[temperament].join(", ")+'</div></div><div class="sep"></div><div class="muted small">※ MBTIは臨床診断ではありません。相性・職務適性は参考指標です。</div></div></div>'
+        +'<div class="card"><div class="hd"><div style="font-weight:700">機能フロー図</div></div><div class="bd">'+svgFunctionFlow(primary, shadow)+'</div></div>'
+        +'</div>';
+
+      $("#p-stack").innerHTML = '<div class="grid cols-4">'+primary.map(function(fn,i){return '<div class="pill"><b>'+(i+1)+'. '+fn+'</b><br><span class="small muted">'+FUNCTION_SHORT[fn]+'</span></div>';}).join("")+'</div>'
+        +'<div class="sep"></div><div class="grid cols-4">'+shadow.map(function(fn,i){return '<div class="pill" style="opacity:.9"><b>'+(i+5)+'. '+fn+'</b><br><span class="small muted">'+FUNCTION_SHORT[fn]+'</span></div>';}).join("")+'</div>';
+
+      $("#p-functions").innerHTML = '<div class="grid cols-2">'+primary.concat(shadow).map(function(fn,i){return '<div class="card"><div class="bd"><div style="font-weight:700">'+(i<4? (i+1)+'. '+fn+'（主要）' : (i+1)+'. '+fn+'（シャドー）')+'</div><div class="small muted">'+FUNCTION_LONG[fn]+'</div></div></div>';}).join("")+'</div>';
+
+      $("#p-compat").innerHTML = '<div class="grid cols-3">'
+        +'<div class="card"><div class="hd"><div style="font-weight:700">補完（Golden Pair）</div></div><div class="bd small">'+GOLDEN[t].map(function(g){return '<span class="badge" style="margin:0 6px 6px 0">'+g+'</span>';}).join("")+'<div class="muted small" style="margin-top:8px">※ 経験則ベース。個体差にご留意を。</div></div></div>'
+        +'<div class="card"><div class="hd"><div style="font-weight:700">近似（気質一致）</div></div><div class="bd small">'+SIMILAR_BY_TEMPER[temperament].map(function(s){return '<span class="badge" style="margin:0 6px 6px 0">'+s+'</span>';}).join("")+'</div></div>'
+        +'<div class="card"><div class="hd"><div style="font-weight:700">最大コントラスト</div></div><div class="bd small"><span class="badge">'+t.replace(/./g,function(c){return ({I:"E",E:"I",N:"S",S:"N",T:"F",F:"T",J:"P",P:"J"})[c];})+'</span><div class="muted small" style="margin-top:8px">協働で相互学習が進む可能性。</div></div></div>'
+        +'</div>';
+
+      $("#p-career").innerHTML = '<div class="grid cols-2">'+CAREER_BY_TEMPER[temperament].map(function(c){return '<div class="pill">'+c+'</div>';}).join("")+'</div>';
+      $("#p-study").innerHTML = '<div class="grid cols-3">'+STUDY_BY_TEMPER[temperament].map(function(c){return '<div class="pill">'+c+'</div>';}).join("")+'</div>';
+      $("#p-dev").innerHTML = '<div class="card"><div class="hd"><div style="font-weight:700">機能の発達トラック（概念図）</div></div><div class="bd">'+svgDevelopment(primary)+'<div class="muted small" style="margin-top:8px">Dominant → Auxiliary → Tertiary → Inferior の順に扱いやすさが増す傾向（個人差あり）。</div></div></div>';
+
+      // Tabs
+      var tabBtns = detailInner.querySelectorAll(".tab-btn");
+      var tabPanels = detailInner.querySelectorAll(".tab-panel");
+      function activateTab(id){
+        for (var i=0;i<tabBtns.length;i++){ var n=tabBtns[i]; n.classList.toggle("active", n.getAttribute("data-tab")===id); }
+        for (var j=0;j<tabPanels.length;j++){ var p=tabPanels[j]; p.classList.toggle("active", p.id==="panel-"+id); }
+      }
+      for (var k=0;k<tabBtns.length;k++){
+        (function(btn){ btn.addEventListener("click", function(){ activateTab(btn.getAttribute("data-tab")); }); })(tabBtns[k]);
+      }
+      activateTab("overview");
+
+      // Close
+      var closeBtn = detailInner.querySelector("#closeDetailBtn");
+      closeBtn.addEventListener("click", closeDetail);
+
+      // ESC handler (store reference for proper removal)
+      escHandler = function(e){ if(e.key==="Escape"){ closeDetail(); } };
+      document.addEventListener("keydown", escHandler);
+
+      // Expand animation
+      openPanel();
+
+      // Scroll into view
+      detailPanel.scrollIntoView({behavior:"smooth", block:"start"});
+
+      // Click source pop
+      if(node){
+        node.classList.remove("pop"); void node.offsetWidth; node.classList.add("pop");
+      }
+    }
+
+    function closeDetail(){
+      if(!detailPanel.classList.contains("open")) return;
+      currentType = null;
+      if(escHandler){ document.removeEventListener("keydown", escHandler); escHandler = null; }
+      collapsePanel();
+    }
+
+    function openPanel(){
+      detailPanel.setAttribute("aria-hidden","false");
+      var targetH = detailInner.scrollHeight;
+      detailPanel.style.height = targetH + "px";
+      detailPanel.classList.add("open");
+      detailPanel.addEventListener("transitionend", function done(ev){
+        if(ev.propertyName !== "height") return;
+        detailPanel.style.height = "auto";
+        detailPanel.removeEventListener("transitionend", done);
+      });
+    }
+
+    function collapsePanel(){
+      var currentH = detailPanel.scrollHeight;
+      detailPanel.style.height = currentH + "px";
+      requestAnimationFrame(function(){ detailPanel.style.height = "0px"; });
+      detailPanel.addEventListener("transitionend", function done(ev){
+        if(ev.propertyName !== "height") return;
+        detailPanel.classList.remove("open");
+        detailPanel.setAttribute("aria-hidden","true");
+        detailInner.innerHTML = "";
+        detailPanel.removeEventListener("transitionend", done);
+      });
+    }
+
+    function openFromSelect(t){
+      var card = Array.prototype.slice.call(typeGrid.children).find(function(c){ return c.getAttribute("data-type")===t; });
+      openDetail(t, card);
+    }
+  </script>
+</body>
+</html>
